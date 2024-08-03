@@ -1,6 +1,8 @@
 import { PrismaClient } from '@prisma/client'
 import locations from './locations'
 import users from './users'
+import * as argon from "argon2"
+
 const prisma = new PrismaClient()
 
 const create = async () => {
@@ -13,11 +15,13 @@ const create = async () => {
             skipDuplicates: true
         })
 
+        const hashedPassword = await argon.hash("password")
+
         await prisma.user.createMany({
-            data: users.map((user) => ({
+            data: users.map((user) =>  ({
                 name: user["name"],
                 email: user["email"],
-                password: user["password"],
+                password: hashedPassword,
                 farmSize: user["farmSize"],
                 role: user["role"]
             })) || [] ,
