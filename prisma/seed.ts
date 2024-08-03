@@ -18,6 +18,7 @@ const create = async () => {
                 name: user["name"],
                 email: user["email"],
                 password: user["password"],
+                farmSize: user["farmSize"],
                 role: user["role"]
             })) || [] ,
             skipDuplicates: true
@@ -33,12 +34,8 @@ const create = async () => {
 const destroy = async () => {
     try {
         // await prisma.location.deleteMany({})
-        // await prisma.category.deleteMany({})
+        // await prisma.input.deleteMany({})
         // await prisma.user.deleteMany({})
-        // await prisma.chat.deleteMany({})
-        // await prisma.advert.deleteMany({})
-        // await prisma.gallery.deleteMany({})
-        // await prisma.adGallery.deleteMany({})
 
         console.log("Destroy Done");
 
