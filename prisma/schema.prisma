@@ -1,0 +1,87 @@
+generator client {
+  provider = "prisma-client-js"
+  previewFeatures = ["fullTextSearch"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Location {
+  id String @id @default(uuid())
+  name String @unique
+  city String
+
+  createdAt       DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt       DateTime @updatedAt @db.Timestamptz(3)
+   
+  users User[]
+  inputs Input[]
+
+  @@map("locations")
+}
+
+model User {
+  id String @id @default(uuid())
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @db.Timestamptz(3)
+
+  name String
+  farmSize Float
+  coordinates String?
+  email String @unique
+  emailVerified Boolean @default(false)
+  role Role
+  password String
+
+  locationId String? 
+  location Location? @relation(fields: [locationId], references: [id])
+  
+  inputs  AssignedInput[] 
+
+  @@index([name])
+  @@map("users")
+}
+
+model Input {
+  id String @id @default(uuid())
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @db.Timestamptz(3)
+
+  name String
+
+  quantiy Int
+  unit String
+
+  userId String
+
+  locationId String
+  location Location @relation(fields: [locationId], references: [id])
+
+  assignedInputs  AssignedInput[]
+
+  @@map("inputs")
+}
+
+model AssignedInput {
+  id String @id @default(uuid())
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @db.Timestamptz(3)
+
+  received Boolean @default(false)
+  payback Float
+
+  inputId String
+  input Input @relation(fields: [inputId], references: [id], onDelete: Cascade)
+
+  userId String
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@map("assignedinputs")
+}
+
+enum Role {
+  FARMER
+  DISTRIBUTOR
+  SUPERUSER
+}
