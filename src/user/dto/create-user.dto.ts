@@ -20,7 +20,7 @@ export class CreateUserDto {
   role: "FARMER" | "DISTRIBUTOR" | "SUPERUSER";
 
   @IsNumber()
-  @IsNotEmpty()
+  @IsOptional()
   farmSize: number;
 
   @IsString()

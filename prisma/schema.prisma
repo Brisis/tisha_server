@@ -28,7 +28,7 @@ model User {
   updatedAt DateTime @updatedAt @db.Timestamptz(3)
 
   name String
-  farmSize Float
+  farmSize Float?
   coordinates String?
   email String @unique
   emailVerified Boolean @default(false)
@@ -51,7 +51,7 @@ model Input {
 
   name String
 
-  quantiy Int
+  quantity Int
   unit String
 
   userId String

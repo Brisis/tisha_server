@@ -7,7 +7,7 @@ export class CreateInputDto {
 
   @IsNumber()
   @IsNotEmpty()
-  quantiy: number;
+  quantity: number;
 
   @IsString()
   @IsNotEmpty()

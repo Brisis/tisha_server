@@ -41,7 +41,7 @@ export class LocationService {
                 data: createLocationDto
             })
 
-            return location
+            return await this.findAll()
         } catch (error) {
             if (error instanceof PrismaClientKnownRequestError) {
                 if (error.code == "P2002") {

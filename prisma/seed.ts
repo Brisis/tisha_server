@@ -37,9 +37,9 @@ const create = async () => {
 
 const destroy = async () => {
     try {
-        // await prisma.location.deleteMany({})
-        // await prisma.input.deleteMany({})
-        // await prisma.user.deleteMany({})
+        await prisma.location.deleteMany({})
+        await prisma.input.deleteMany({})
+        await prisma.user.deleteMany({})
 
         console.log("Destroy Done");
 

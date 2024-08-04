@@ -6,7 +6,7 @@ export class AuthDto {
     name: string;
 
     @IsNumber()
-    @IsNotEmpty()
+    @IsOptional()
     farmSize: number;
 
     @IsString()

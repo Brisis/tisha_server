@@ -60,7 +60,7 @@ export class AuthService {
 
         if (!user) {
             throw new ForbiddenException("Credentials incorrect")
-        }
+        }        
 
         const pwdMatches = await argon.verify(user.password, dto.password)
 
