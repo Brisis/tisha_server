@@ -3,6 +3,8 @@ import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateInputDto } from './dto/create-input.dto';
 import { UpdateInputDto } from './dto/update-input.dto';
+import { CreateFarmerInputDto } from './dto/create-farmer-input.dto';
+import { UpdateFarmerInputDto } from './dto/update-farmer-input.dto';
 
 @Injectable()
 export class InputService {
@@ -10,12 +12,22 @@ export class InputService {
 
     async findAll() {
         return this.prisma.input.findMany({
-            select: {
-                id: true,
-                name: true,
+            orderBy: {
+                createdAt: 'desc'
+            }
+        })
+    }
+
+    async findFarmerInputs(userId: string) {
+        return this.prisma.assignedInput.findMany({
+            where: {
+                userId: userId
             },
             orderBy: {
-                name: 'asc'
+               createdAt: 'desc'
+            },
+            include: {
+                input: true
             }
         })
     }
@@ -36,11 +48,11 @@ export class InputService {
 
     async create(createInputDto: CreateInputDto) {
         try {
-            const input = await this.prisma.input.create({
+            await this.prisma.input.create({
                 data: createInputDto
             })
 
-            return input
+            return await this.findAll()
         } catch (error) {
             if (error instanceof PrismaClientKnownRequestError) {
                 if (error.code == "P2002") {
@@ -50,6 +62,46 @@ export class InputService {
 
             throw error
         }
+    }
+
+    async addFarmerInput(userId: string, createFarmerInputDto: CreateFarmerInputDto) {
+        const user = await this.prisma.user.findUnique({
+            where: {
+                id: userId
+            }
+        })
+
+        if (!user) {
+            throw new NotFoundException("User not found")
+        }
+
+        // let userItems = []
+        // for (let i = 0; i < user.inputs.length; i++) {
+        //     const element = {
+        //         id: user.inputs[i].id,
+        //         inputId: user.inputs[i].inputId
+        //     }
+        //     userItems.push(element)
+        // }
+
+        // let connArr = inputs.filter(x => !userItems.map(ui => ui.inputId).includes(x.id));        
+        
+        await this.prisma.user.update({
+            where: {
+                id: userId
+            },
+            data: {
+                inputs: {
+                    create: createFarmerInputDto
+                }
+            },
+            include: {
+                inputs: true,
+                location: true
+            }
+        })
+
+        return await this.findFarmerInputs(userId);
     }
 
     async update(id: string, updateInputDto: UpdateInputDto) {
@@ -68,6 +120,34 @@ export class InputService {
 
         return updatedInput;
     }
+
+    async updateFarmerInput(id: string, userId: string, updateFarmerInputDto: UpdateFarmerInputDto) {
+        
+        
+        const input = await this.prisma.assignedInput.findUnique({
+            where: {
+                id: id
+            }
+        })
+
+        if (!input) {
+            throw new NotFoundException
+        }
+      
+        await this.prisma.assignedInput.update({
+            where: {
+                id: id
+            },
+            data: {
+                payback: updateFarmerInputDto.payback,
+                received: updateFarmerInputDto.received
+            }
+        })
+
+        return await this.findFarmerInputs(userId);
+    }
+
+    
 
     async delete(id: string) {
         const input = await this.findOne(id)

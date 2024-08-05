@@ -27,7 +27,11 @@ export class UserService {
                     createdAt: "desc"
                 },
                 include: {
-                    inputs: true,
+                    inputs: {
+                        include: {
+                            input: true
+                        }
+                    },
                     location: true
                 }
             })
@@ -42,7 +46,11 @@ export class UserService {
                     createdAt: "desc"
                 },
                 include: {
-                    inputs: true,
+                    inputs: {
+                        include: {
+                            input: true
+                        }
+                    },
                     location: true
                 }
             })
@@ -96,14 +104,18 @@ export class UserService {
                 id
             },
             include: {
-                inputs: true,
+                inputs: {
+                    include: {
+                        input: true
+                    }
+                },
                 location: true
             }
         })        
 
         if (!user) {
             throw new NotFoundException
-        }
+        }        
 
         return user
     }

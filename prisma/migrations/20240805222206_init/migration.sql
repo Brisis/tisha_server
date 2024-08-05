@@ -1,5 +1,5 @@
 -- CreateEnum
-CREATE TYPE "Role" AS ENUM ('USER', 'ADMIN');
+CREATE TYPE "Role" AS ENUM ('FARMER', 'DISTRIBUTOR', 'SUPERUSER');
 
 -- CreateTable
 CREATE TABLE "locations" (
@@ -18,6 +18,8 @@ CREATE TABLE "users" (
     "createdAt" TIMESTAMPTZ(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMPTZ(3) NOT NULL,
     "name" TEXT NOT NULL,
+    "farmSize" DOUBLE PRECISION,
+    "coordinates" TEXT,
     "email" TEXT NOT NULL,
     "emailVerified" BOOLEAN NOT NULL DEFAULT false,
     "role" "Role" NOT NULL,
@@ -33,12 +35,26 @@ CREATE TABLE "inputs" (
     "createdAt" TIMESTAMPTZ(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMPTZ(3) NOT NULL,
     "name" TEXT NOT NULL,
-    "amount" TEXT NOT NULL,
-    "received" BOOLEAN NOT NULL DEFAULT false,
-    "adminId" TEXT NOT NULL,
+    "quantity" INTEGER NOT NULL,
+    "unit" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
+    "locationId" TEXT NOT NULL,
 
     CONSTRAINT "inputs_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "assignedinputs" (
+    "id" TEXT NOT NULL,
+    "createdAt" TIMESTAMPTZ(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMPTZ(3) NOT NULL,
+    "received" BOOLEAN NOT NULL DEFAULT false,
+    "payback" DOUBLE PRECISION,
+    "quantity" INTEGER NOT NULL,
+    "inputId" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+
+    CONSTRAINT "assignedinputs_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
@@ -54,4 +70,10 @@ CREATE INDEX "users_name_idx" ON "users"("name");
 ALTER TABLE "users" ADD CONSTRAINT "users_locationId_fkey" FOREIGN KEY ("locationId") REFERENCES "locations"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "inputs" ADD CONSTRAINT "inputs_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "inputs" ADD CONSTRAINT "inputs_locationId_fkey" FOREIGN KEY ("locationId") REFERENCES "locations"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "assignedinputs" ADD CONSTRAINT "assignedinputs_inputId_fkey" FOREIGN KEY ("inputId") REFERENCES "inputs"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "assignedinputs" ADD CONSTRAINT "assignedinputs_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;

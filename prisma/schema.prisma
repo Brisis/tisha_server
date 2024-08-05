@@ -70,7 +70,8 @@ model AssignedInput {
   updatedAt DateTime @updatedAt @db.Timestamptz(3)
 
   received Boolean @default(false)
-  payback Float
+  payback Float?
+  quantity Int
 
   inputId String
   input Input @relation(fields: [inputId], references: [id], onDelete: Cascade)
