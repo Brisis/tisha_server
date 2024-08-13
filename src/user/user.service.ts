@@ -32,6 +32,11 @@ export class UserService {
                             input: true
                         }
                     },
+                    applications: {
+                        include: {
+                            input: true
+                        }
+                    },
                     location: true
                 }
             })
@@ -47,6 +52,11 @@ export class UserService {
                 },
                 include: {
                     inputs: {
+                        include: {
+                            input: true
+                        }
+                    },
+                    applications: {
                         include: {
                             input: true
                         }
@@ -121,6 +131,11 @@ export class UserService {
                         input: true
                     }
                 },
+                applications: {
+                    include: {
+                        input: true
+                    }
+                },
                 location: true
             }
         })        
@@ -160,6 +175,7 @@ export class UserService {
             data: updateUserDto,
             include: {
                 inputs: true,
+                applications: true,
                 location: true
             }
         })        

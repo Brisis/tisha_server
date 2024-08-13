@@ -14,6 +14,10 @@ export class ApplicationService {
         return this.prisma.inputApplication.findMany({
             orderBy: {
                 createdAt: 'desc'
+            },
+            include: {
+                input: true,
+                user: true,
             }
         })
     }
@@ -27,28 +31,29 @@ export class ApplicationService {
                createdAt: 'desc'
             },
             include: {
-                input: true
+                input: true,
+                user: true,
             }
         })
     }
 
     async findOne(id: string) {
-        const input = await this.prisma.input.findUnique({
+        const inputApplication = await this.prisma.inputApplication.findUnique({
             where: {
                 id
             }
         })
 
-        if (!input) {
+        if (!inputApplication) {
             throw new NotFoundException
         }
 
-        return input
+        return inputApplication
     }
 
     async create(createApplicationDto: CreateApplicationDto) {
         try {
-            await this.prisma.input.create({
+            await this.prisma.inputApplication.create({
                 data: createApplicationDto
             })
 
@@ -64,54 +69,14 @@ export class ApplicationService {
         }
     }
 
-    async addFarmerApplication(userId: string, createFarmerApplicationDto: CreateFarmerApplicationDto) {
-        const user = await this.prisma.user.findUnique({
-            where: {
-                id: userId
-            }
-        })
-
-        if (!user) {
-            throw new NotFoundException("User not found")
-        }
-
-        // let userItems = []
-        // for (let i = 0; i < user.inputs.length; i++) {
-        //     const element = {
-        //         id: user.inputs[i].id,
-        //         inputId: user.inputs[i].inputId
-        //     }
-        //     userItems.push(element)
-        // }
-
-        // let connArr = inputs.filter(x => !userItems.map(ui => ui.inputId).includes(x.id));        
-        
-        await this.prisma.user.update({
-            where: {
-                id: userId
-            },
-            data: {
-                inputs: {
-                    create: createFarmerApplicationDto
-                }
-            },
-            include: {
-                inputs: true,
-                location: true
-            }
-        })
-
-        return await this.findFarmerApplications(userId);
-    }
-
     async update(id: string, updateApplicationDto: UpdateApplicationDto) {
-        const input = await this.findOne(id)
+        const inputApplication = await this.findOne(id)
 
-        if (!input) {
+        if (!inputApplication) {
             throw new NotFoundException
         }
       
-        const updatedApplication = await this.prisma.input.update({
+        const updatedApplication = await this.prisma.inputApplication.update({
             where: {
                 id
             },
@@ -154,7 +119,7 @@ export class ApplicationService {
             throw new NotFoundException
         }
 
-        return await this.prisma.input.delete({
+        return await this.prisma.inputApplication.delete({
             where: {
                 id
             }

@@ -32,11 +32,6 @@ export class ApplicationController {
         return this.applicationService.findFarmerApplications(userId)
     }
 
-    @Post("/add-to-farmer/:userId")
-    addFarmerApplication(@Param("userId") userId: string, @Body() createFarmerApplicationDto: CreateFarmerApplicationDto) {
-        return this.applicationService.addFarmerApplication(userId, createFarmerApplicationDto)
-    }
-
     @UseGuards(JwtGuard)
     @Patch(":id")
     update(@Param("id") id: string, @Body() updateApplicationDto: UpdateApplicationDto) {

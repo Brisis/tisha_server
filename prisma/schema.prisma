@@ -130,6 +130,7 @@ model InputApplication {
 
   accepted Boolean @default(false)
   message String
+  quantity Float
 
   inputId String
   input Input @relation(fields: [inputId], references: [id], onDelete: Cascade)

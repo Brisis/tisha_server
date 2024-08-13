@@ -3,7 +3,7 @@ import { IsNotEmpty, IsNumber, IsString } from "class-validator";
 export class CreateApplicationDto {
   @IsString()
   @IsNotEmpty()
-  name: string;
+  message: string;
 
   @IsNumber()
   @IsNotEmpty()
@@ -11,13 +11,9 @@ export class CreateApplicationDto {
 
   @IsString()
   @IsNotEmpty()
-  unit: string;
+  inputId: string;
 
   @IsString()
   @IsNotEmpty()
   userId: string;
-
-  @IsString()
-  @IsNotEmpty()
-  locationId: string;
 }
