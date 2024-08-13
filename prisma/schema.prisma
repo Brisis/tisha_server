@@ -28,10 +28,25 @@ model User {
   updatedAt DateTime @updatedAt @db.Timestamptz(3)
 
   name String
+  surname String?
+  dob String?
+  age Int?
+  gender Gender?
+  phone String?
+  address String?
+  nationalId String?
+
   farmSize Float?
   coordinates String?
+  landOwnership OwnerShip?
+  farmerType FarmerType?
+  cropType CropType?
+  livestockType LiveStockType?
+  livestockNumber Int?
+
   email String @unique
   emailVerified Boolean @default(false)
+  
   role Role
   password String
 
@@ -39,9 +54,35 @@ model User {
   location Location? @relation(fields: [locationId], references: [id])
   
   inputs  AssignedInput[] 
+  applications InputApplication[]
+  feedbackMessages FeedbackMessages[]
 
   @@index([name])
   @@map("users")
+}
+
+enum OwnerShip {
+  Owner
+  Lease
+  Sharing
+}
+
+enum FarmerType {
+  Subsistence
+  Commercial
+}
+
+enum CropType {
+  Grain
+  Fruit
+  Vegetable
+}
+
+enum LiveStockType {
+  Goat
+  Cattle
+  Poultry
+  Aquatic
 }
 
 model Input {
@@ -51,7 +92,7 @@ model Input {
 
   name String
 
-  quantity Int
+  quantity Float
   unit String
 
   userId String
@@ -60,6 +101,7 @@ model Input {
   location Location @relation(fields: [locationId], references: [id])
 
   assignedInputs  AssignedInput[]
+  applications InputApplication[]
 
   @@map("inputs")
 }
@@ -81,8 +123,41 @@ model AssignedInput {
   @@map("assignedinputs")
 }
 
+model InputApplication {
+  id String @id @default(uuid())
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @db.Timestamptz(3)
+
+  accepted Boolean @default(false)
+  message String
+
+  inputId String
+  input Input @relation(fields: [inputId], references: [id], onDelete: Cascade)
+
+  userId String
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@map("input_applications")
+}
+
+model FeedbackMessages {
+  id String @id @default(uuid())
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @db.Timestamptz(3)
+
+  message String
+
+  userId String
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@map("feedbackMessages")
+}
+
 enum Role {
   FARMER
   DISTRIBUTOR
   SUPERUSER
+}
+
+enum Gender {
+  MALE
+  FEMALE
 }

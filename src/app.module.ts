@@ -7,6 +7,8 @@ import { ConfigModule } from '@nestjs/config';
 import { UserModule } from './user/user.module';
 import { InputModule } from './input/input.module';
 import { LocationModule } from './location/location.module';
+import { ApplicationModule } from './application/application.module';
+import { FeedbackModule } from './feedback/feedback.module';
 
 @Module({
   imports: [
@@ -17,6 +19,8 @@ import { LocationModule } from './location/location.module';
     UserModule,
     InputModule,
     LocationModule,
+    ApplicationModule,
+    FeedbackModule,
     PrismaModule
   ],
   controllers: [AppController],

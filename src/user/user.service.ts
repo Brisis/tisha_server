@@ -69,10 +69,22 @@ export class UserService {
                 data: {
                     role: role,
                     name: createUserDto.name,
+                    surname: createUserDto.surname,
+                    dob: createUserDto.dob,
+                    age: createUserDto.age,
+                    gender: createUserDto.gender,
+                    phone: createUserDto.phone,
+                    address: createUserDto.address,
+                    nationalId: createUserDto.nationalId,
                     locationId: createUserDto.locationId,
                     farmSize: createUserDto.farmSize,
                     email: createUserDto.email,
                     coordinates: createUserDto.coordinates,
+                    landOwnership: createUserDto.landOwnership,
+                    farmerType: createUserDto.farmerType,
+                    cropType: createUserDto.cropType,
+                    livestockType: createUserDto.livestockType,
+                    livestockNumber: createUserDto.livestockNumber,
                     password: hashedPassword
                 },
                 select: {
