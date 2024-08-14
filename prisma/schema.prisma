@@ -113,7 +113,7 @@ model AssignedInput {
 
   received Boolean @default(false)
   payback Float?
-  quantity Int
+  quantity Float
 
   inputId String
   input Input @relation(fields: [inputId], references: [id], onDelete: Cascade)

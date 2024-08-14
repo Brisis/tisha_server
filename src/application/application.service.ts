@@ -68,6 +68,58 @@ export class ApplicationService {
             throw error
         }
     }
+    
+    async accept(createFarmerApplicationDto: CreateFarmerApplicationDto) {
+        const inputApplication = await this.findOne(createFarmerApplicationDto.applicationId)
+
+        if (!inputApplication) {
+            throw new NotFoundException
+        }
+
+        const input = await this.prisma.input.findUnique({
+            where: {
+                id: createFarmerApplicationDto.inputId
+            }
+        })
+
+        if (!input) {
+            throw new NotFoundException
+        }
+      
+        await this.prisma.inputApplication.update({
+            where: {
+                id: inputApplication.id
+            },
+            data: {
+                accepted: true
+            }
+        })
+
+        await this.prisma.input.update({
+            where: {
+                id: inputApplication.inputId
+            },
+            data: {
+                quantity: input.quantity - createFarmerApplicationDto.quantity
+            }
+        })
+
+        await this.prisma.user.update({
+            where: {
+                id: createFarmerApplicationDto.userId
+            },
+            data: {
+                inputs: {
+                    create: {
+                        inputId: createFarmerApplicationDto.inputId,
+                        quantity: createFarmerApplicationDto.quantity,
+                    }
+                }
+            }
+        })
+
+        return await this.findAll()
+    }
 
     async update(id: string, updateApplicationDto: UpdateApplicationDto) {
         const inputApplication = await this.findOne(id)

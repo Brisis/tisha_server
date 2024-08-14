@@ -174,8 +174,16 @@ export class UserService {
             },
             data: updateUserDto,
             include: {
-                inputs: true,
-                applications: true,
+                inputs: {
+                    include: {
+                        input: true
+                    }
+                },
+                applications: {
+                    include: {
+                        input: true
+                    }
+                },
                 location: true
             }
         })        

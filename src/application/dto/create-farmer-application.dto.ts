@@ -9,11 +9,11 @@ export class CreateFarmerApplicationDto {
   @IsNotEmpty()
   inputId: string;
 
-  @IsNumber()
-  @IsOptional()
-  payback: number;
+  @IsString()
+  @IsNotEmpty()
+  applicationId: string;
 
-  @IsBoolean()
-  @IsOptional()
-  received: boolean;
+  @IsString()
+  @IsNotEmpty()
+  userId: string;
 }

@@ -22,6 +22,12 @@ export class ApplicationController {
     }
 
     @UseGuards(JwtGuard)
+    @Post("/accept")
+    accept(@Body() createFarmerApplicationDto: CreateFarmerApplicationDto) {
+        return this.applicationService.accept(createFarmerApplicationDto)
+    }
+
+    @UseGuards(JwtGuard)
     @Get(":id")
     findOne(@Param("id") id: string) {
         return this.applicationService.findOne(id)
