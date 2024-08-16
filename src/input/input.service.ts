@@ -18,6 +18,18 @@ export class InputService {
         })
     }
 
+    async findAllFarmerInputs() {
+        return this.prisma.assignedInput.findMany({
+            orderBy: {
+               createdAt: 'desc'
+            },
+            include: {
+                input: true,
+                user: true
+            }
+        })
+    }
+
     async findFarmerInputs(userId: string) {
         return this.prisma.assignedInput.findMany({
             where: {

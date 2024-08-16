@@ -22,6 +22,12 @@ export class InputController {
     }
 
     @UseGuards(JwtGuard)
+    @Get("/assigned")
+    findAllFarmerInputs() {
+        return this.inputService.findAllFarmerInputs()
+    }
+
+    @UseGuards(JwtGuard)
     @Get(":id")
     findOne(@Param("id") id: string) {
         return this.inputService.findOne(id)
