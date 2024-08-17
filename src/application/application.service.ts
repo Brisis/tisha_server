@@ -54,7 +54,13 @@ export class ApplicationService {
     async create(createApplicationDto: CreateApplicationDto) {
         try {
             await this.prisma.inputApplication.create({
-                data: createApplicationDto
+                data: {
+                    inputId: createApplicationDto.inputId,
+                    message: createApplicationDto.message,
+                    quantity: createApplicationDto.quantity,
+                    userId: createApplicationDto.userId,
+                    status: "INPROGRESS"
+                }
             })
 
             return await this.findAll()
@@ -91,7 +97,7 @@ export class ApplicationService {
                 id: inputApplication.id
             },
             data: {
-                accepted: true
+                status: "ACCEPTED"
             }
         })
 
@@ -115,6 +121,25 @@ export class ApplicationService {
                         quantity: createFarmerApplicationDto.quantity,
                     }
                 }
+            }
+        })
+
+        return await this.findAll()
+    }
+
+    async reject (id: string) {
+        const inputApplication = await this.findOne(id)
+
+        if (!inputApplication) {
+            throw new NotFoundException
+        }
+
+        await this.prisma.inputApplication.update({
+            where: {
+                id: inputApplication.id
+            },
+            data: {
+                status: 'REJECTED'
             }
         })
 

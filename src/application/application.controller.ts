@@ -33,6 +33,12 @@ export class ApplicationController {
         return this.applicationService.findOne(id)
     }
 
+    @UseGuards(JwtGuard)
+    @Post("/reject/:id")
+    reject(@Param("id") id: string) {
+        return this.applicationService.reject(id)
+    }
+
     @Get("/user/:userId")
     findFarmerApplications(@Param("userId") userId: string) {
         return this.applicationService.findFarmerApplications(userId)

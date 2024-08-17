@@ -128,7 +128,7 @@ model InputApplication {
   createdAt DateTime @default(now()) @db.Timestamptz(3)
   updatedAt DateTime @updatedAt @db.Timestamptz(3)
 
-  accepted Boolean @default(false)
+  status ApplicationStatus
   message String
   quantity Float
 
@@ -156,6 +156,12 @@ enum Role {
   FARMER
   DISTRIBUTOR
   SUPERUSER
+}
+
+enum ApplicationStatus {
+  ACCEPTED
+  INPROGRESS
+  REJECTED
 }
 
 enum Gender {
