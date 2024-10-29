@@ -17,6 +17,12 @@ export class UserController {
     }
 
     @UseGuards(JwtGuard)
+    @Get("/farmers")
+    findAllFarmers(@Query('query') query?: string) {
+        return this.userService.findAllFarmers(query);
+    }
+
+    @UseGuards(JwtGuard)
     @Post()
     create(@Body() createUserDto: CreateUserDto) {
         return this.userService.create(createUserDto)

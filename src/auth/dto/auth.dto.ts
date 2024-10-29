@@ -3,7 +3,7 @@ import { IsEmail, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-valid
 export class AuthDto {
     @IsString()
     @IsNotEmpty()
-    name: string;
+    firstname: string;
 
     @IsNumber()
     @IsOptional()

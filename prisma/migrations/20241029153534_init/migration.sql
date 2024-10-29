@@ -11,7 +11,13 @@ CREATE TYPE "CropType" AS ENUM ('Grain', 'Fruit', 'Vegetable');
 CREATE TYPE "LiveStockType" AS ENUM ('Goat', 'Cattle', 'Poultry', 'Aquatic');
 
 -- CreateEnum
-CREATE TYPE "Role" AS ENUM ('FARMER', 'DISTRIBUTOR', 'SUPERUSER');
+CREATE TYPE "Role" AS ENUM ('FARMER', 'INPUTCOORDINATOR', 'FIELDOFFICER', 'SUPERUSER');
+
+-- CreateEnum
+CREATE TYPE "InputType" AS ENUM ('Tructor', 'Seeds', 'Fertiliser', 'Insecticide');
+
+-- CreateEnum
+CREATE TYPE "InputScheme" AS ENUM ('Pfumvudza', 'Command', 'Donors', 'NGO', 'WHO');
 
 -- CreateEnum
 CREATE TYPE "ApplicationStatus" AS ENUM ('ACCEPTED', 'INPROGRESS', 'REJECTED');
@@ -35,8 +41,8 @@ CREATE TABLE "users" (
     "id" TEXT NOT NULL,
     "createdAt" TIMESTAMPTZ(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMPTZ(3) NOT NULL,
-    "name" TEXT NOT NULL,
-    "surname" TEXT,
+    "firstname" TEXT NOT NULL,
+    "lastname" TEXT,
     "dob" TEXT,
     "age" INTEGER,
     "gender" "Gender",
@@ -66,7 +72,15 @@ CREATE TABLE "inputs" (
     "updatedAt" TIMESTAMPTZ(3) NOT NULL,
     "name" TEXT NOT NULL,
     "quantity" DOUBLE PRECISION NOT NULL,
-    "unit" TEXT NOT NULL,
+    "unit" TEXT,
+    "type" "InputType" NOT NULL,
+    "scheme" "InputScheme" NOT NULL,
+    "barcode" TEXT NOT NULL,
+    "chassisNumber" TEXT,
+    "engineType" TEXT,
+    "numberPlate" TEXT,
+    "color" TEXT,
+    "notified" BOOLEAN NOT NULL DEFAULT false,
     "userId" TEXT NOT NULL,
     "locationId" TEXT NOT NULL,
 
@@ -119,7 +133,7 @@ CREATE UNIQUE INDEX "locations_name_key" ON "locations"("name");
 CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
 
 -- CreateIndex
-CREATE INDEX "users_name_idx" ON "users"("name");
+CREATE INDEX "users_firstname_idx" ON "users"("firstname");
 
 -- AddForeignKey
 ALTER TABLE "users" ADD CONSTRAINT "users_locationId_fkey" FOREIGN KEY ("locationId") REFERENCES "locations"("id") ON DELETE SET NULL ON UPDATE CASCADE;

@@ -19,11 +19,12 @@ const create = async () => {
 
         await prisma.user.createMany({
             data: users.map((user) =>  ({
-                name: user["name"],
+                firstname: user["firstname"],
+                lastname: user["lastname"],
                 email: user["email"],
                 password: hashedPassword,
-                farmSize: user["farmSize"],
-                role: user["role"]
+                role: user["role"],
+                gender: user["gender"]
             })) || [] ,
             skipDuplicates: true
         })

@@ -33,6 +33,12 @@ export class InputController {
         return this.inputService.findOne(id)
     }
 
+    @UseGuards(JwtGuard)
+    @Patch(":id/notify")
+    notify(@Param("id") id: string) {
+        return this.inputService.notify(id)
+    }
+
     @Get("/user/:userId")
     findFarmerInputs(@Param("userId") userId: string) {
         return this.inputService.findFarmerInputs(userId)

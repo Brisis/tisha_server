@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNumber, IsString } from "class-validator";
+import { IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
 
 export class CreateInputDto {
   @IsString()
@@ -10,8 +10,40 @@ export class CreateInputDto {
   quantity: number;
 
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   unit: string;
+
+  @IsEnum(['Tructor','Seeds','Fertiliser','Insecticide'], {
+    message: "Valid type required"
+  })
+  @IsNotEmpty()
+  type: "Tructor" | "Seeds" | "Fertiliser" | "Insecticide";
+
+  @IsEnum(['Pfumvudza','Command','Donors','NGO','WHO'], {
+    message: "Valid type required"
+  })
+  @IsNotEmpty()
+  scheme: "Pfumvudza" | "Command" | "Donors" | "NGO" | "WHO";
+
+  @IsString()
+  @IsNotEmpty()
+  barcode: string;
+
+  @IsString()
+  @IsOptional()
+  chassisNumber: string;
+
+  @IsString()
+  @IsOptional()
+  engineType: string;
+
+  @IsString()
+  @IsOptional()
+  numberPlate: string;
+
+  @IsString()
+  @IsOptional()
+  color: string;
 
   @IsString()
   @IsNotEmpty()

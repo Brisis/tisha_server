@@ -25,7 +25,11 @@ export class InputService {
             },
             include: {
                 input: true,
-                user: true
+                user: {
+                    include: {
+                        location: true
+                    }
+                }
             }
         })
     }
@@ -131,6 +135,25 @@ export class InputService {
         })
 
         return updatedInput;
+    }
+
+    async notify(id: string) {
+        const input = await this.findOne(id)
+
+        if (!input) {
+            throw new NotFoundException
+        }
+      
+        await this.prisma.input.update({
+            where: {
+                id
+            },
+            data: {
+                notified: true
+            }
+        })
+
+        return await this.findAll();
     }
 
     async updateFarmerInput(id: string, userId: string, updateFarmerInputDto: UpdateFarmerInputDto) {

@@ -15,7 +15,63 @@ export class UserService {
             users = await this.prisma.user.findMany({
                 where: {
                     AND: [
-                        {name: {
+                        {firstname: {
+                            contains: query,
+                            mode: 'insensitive'
+                        },}
+                    ]
+                 
+                },
+                orderBy: {
+                    createdAt: "desc"
+                },
+                include: {
+                    inputs: {
+                        include: {
+                            input: true
+                        }
+                    },
+                    applications: {
+                        include: {
+                            input: true
+                        }
+                    },
+                    location: true
+                }
+            })
+
+        }
+        else {
+            users = await this.prisma.user.findMany({
+                orderBy: {
+                    createdAt: "desc"
+                },
+                include: {
+                    inputs: {
+                        include: {
+                            input: true
+                        }
+                    },
+                    applications: {
+                        include: {
+                            input: true
+                        }
+                    },
+                    location: true
+                }
+            })
+        }
+
+        return users
+    }
+
+    async findAllFarmers(query?: string) {
+        let users = []
+        if (query != undefined) {
+            users = await this.prisma.user.findMany({
+                where: {
+                    AND: [
+                        {firstname: {
                             contains: query,
                             mode: 'insensitive'
                         },},
@@ -66,20 +122,17 @@ export class UserService {
             })
         }
 
-
         return users
     }
 
     async create(createUserDto: CreateUserDto) {        
         try {
             const hashedPassword = await argon.hash(createUserDto.password)
-            const role = "FARMER"
-
             await this.prisma.user.create({
                 data: {
-                    role: role,
-                    name: createUserDto.name,
-                    surname: createUserDto.surname,
+                    role: createUserDto.role,
+                    firstname: createUserDto.firstname,
+                    lastname: createUserDto.lastname,
                     dob: createUserDto.dob,
                     age: createUserDto.age,
                     gender: createUserDto.gender,

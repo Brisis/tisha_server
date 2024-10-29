@@ -1,5 +1,5 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["fullTextSearch"]
 }
 
@@ -9,55 +9,55 @@ datasource db {
 }
 
 model Location {
-  id String @id @default(uuid())
+  id   String @id @default(uuid())
   name String @unique
   city String
 
-  createdAt       DateTime @default(now()) @db.Timestamptz(3)
-  updatedAt       DateTime @updatedAt @db.Timestamptz(3)
-   
-  users User[]
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @db.Timestamptz(3)
+
+  users  User[]
   inputs Input[]
 
   @@map("locations")
 }
 
 model User {
-  id String @id @default(uuid())
+  id        String   @id @default(uuid())
   createdAt DateTime @default(now()) @db.Timestamptz(3)
   updatedAt DateTime @updatedAt @db.Timestamptz(3)
 
-  name String
-  surname String?
-  dob String?
-  age Int?
-  gender Gender?
-  phone String?
-  address String?
+  firstname  String
+  lastname   String?
+  dob        String?
+  age        Int?
+  gender     Gender?
+  phone      String?
+  address    String?
   nationalId String?
 
-  farmSize Float?
-  coordinates String?
-  landOwnership OwnerShip?
-  farmerType FarmerType?
-  cropType CropType?
-  livestockType LiveStockType?
+  farmSize        Float?
+  coordinates     String?
+  landOwnership   OwnerShip?
+  farmerType      FarmerType?
+  cropType        CropType?
+  livestockType   LiveStockType?
   livestockNumber Int?
 
-  email String @unique
+  email         String  @unique
   emailVerified Boolean @default(false)
-  
-  role Role
+
+  role     Role
   password String
 
-  locationId String? 
-  location Location? @relation(fields: [locationId], references: [id])
-  
-  inputs  AssignedInput[] 
-  applications InputApplication[]
+  locationId String?
+  location   Location? @relation(fields: [locationId], references: [id])
+
+  inputs           AssignedInput[]
+  applications     InputApplication[]
   feedbackMessages FeedbackMessages[]
 
-  @@index([name])
+  @@index([firstname])
   @@map("users")
 }
 
@@ -86,76 +86,103 @@ enum LiveStockType {
 }
 
 model Input {
-  id String @id @default(uuid())
+  id        String   @id @default(uuid())
   createdAt DateTime @default(now()) @db.Timestamptz(3)
   updatedAt DateTime @updatedAt @db.Timestamptz(3)
 
-  name String
+  name          String
+  quantity      Float
+  unit          String?
+  type          InputType
+  scheme        InputScheme
+  barcode       String
+  chassisNumber String?
+  engineType    String?
+  numberPlate   String?
+  color         String?
 
-  quantity Float
-  unit String
+  notified Boolean @default(false)
 
   userId String
 
   locationId String
-  location Location @relation(fields: [locationId], references: [id])
+  location   Location @relation(fields: [locationId], references: [id])
 
-  assignedInputs  AssignedInput[]
-  applications InputApplication[]
+  assignedInputs AssignedInput[]
+  applications   InputApplication[]
 
   @@map("inputs")
 }
 
 model AssignedInput {
-  id String @id @default(uuid())
+  id        String   @id @default(uuid())
   createdAt DateTime @default(now()) @db.Timestamptz(3)
   updatedAt DateTime @updatedAt @db.Timestamptz(3)
 
   received Boolean @default(false)
-  payback Float?
+  payback  Float?
   quantity Float
 
   inputId String
-  input Input @relation(fields: [inputId], references: [id], onDelete: Cascade)
+  input   Input  @relation(fields: [inputId], references: [id], onDelete: Cascade)
 
   userId String
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   @@map("assignedinputs")
 }
 
 model InputApplication {
-  id String @id @default(uuid())
+  id        String   @id @default(uuid())
   createdAt DateTime @default(now()) @db.Timestamptz(3)
   updatedAt DateTime @updatedAt @db.Timestamptz(3)
 
-  status ApplicationStatus
-  message String
+  status   ApplicationStatus
+  message  String
   quantity Float
 
   inputId String
-  input Input @relation(fields: [inputId], references: [id], onDelete: Cascade)
+  input   Input  @relation(fields: [inputId], references: [id], onDelete: Cascade)
 
   userId String
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   @@map("input_applications")
 }
 
 model FeedbackMessages {
-  id String @id @default(uuid())
+  id        String   @id @default(uuid())
   createdAt DateTime @default(now()) @db.Timestamptz(3)
   updatedAt DateTime @updatedAt @db.Timestamptz(3)
 
   message String
 
   userId String
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   @@map("feedbackMessages")
 }
 
 enum Role {
   FARMER
-  DISTRIBUTOR
+  INPUTCOORDINATOR
+  FIELDOFFICER
   SUPERUSER
+}
+
+enum InputType {
+  Tructor
+  Seeds
+  Fertiliser
+  Insecticide
+}
+
+enum InputScheme {
+  Pfumvudza
+  Command
+  Donors
+  NGO
+  WHO
 }
 
 enum ApplicationStatus {

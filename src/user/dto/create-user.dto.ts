@@ -3,11 +3,11 @@ import { IsDate, IsDateString, isDateString, IsEnum, IsNotEmpty, IsNumber, IsOpt
 export class CreateUserDto {
   @IsString()
   @IsNotEmpty()
-  name: string;
+  firstname: string;
 
   @IsString()
   @IsOptional()
-  surname: string;
+  lastname: string;
   
   @IsDateString()
   @IsOptional()
@@ -37,11 +37,11 @@ export class CreateUserDto {
   @IsNotEmpty()
   password: string;
 
-  @IsEnum(['FARMER','DISTRIBUTOR','SUPERUSER'], {
+  @IsEnum(['FARMER','INPUTCOORDINATOR','FIELDOFFICER','SUPERUSER'], {
     message: "Valid role required"
   })
   @IsOptional()
-  role: "FARMER" | "DISTRIBUTOR" | "SUPERUSER";
+  role: "FARMER" | "INPUTCOORDINATOR" | "FIELDOFFICER" | "SUPERUSER";
 
   @IsEnum(['MALE','FEMALE'], {
     message: "Valid gender required"
