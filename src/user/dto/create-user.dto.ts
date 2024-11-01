@@ -26,7 +26,7 @@ export class CreateUserDto {
   address: string;
 
   @IsString()
-  @IsOptional()
+  @IsNotEmpty()
   nationalId: string;
 
   @IsString()

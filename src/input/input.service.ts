@@ -64,6 +64,9 @@ export class InputService {
 
     async create(createInputDto: CreateInputDto) {
         try {
+
+            createInputDto.originalQuantity = createInputDto.quantity
+
             await this.prisma.input.create({
                 data: createInputDto
             })

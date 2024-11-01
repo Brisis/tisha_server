@@ -5,6 +5,10 @@ export class AuthDto {
     @IsNotEmpty()
     firstname: string;
 
+    @IsString()
+  @IsNotEmpty()
+  nationalId: string;
+
     @IsNumber()
     @IsOptional()
     farmSize: number;

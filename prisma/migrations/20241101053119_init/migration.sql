@@ -48,7 +48,7 @@ CREATE TABLE "users" (
     "gender" "Gender",
     "phone" TEXT,
     "address" TEXT,
-    "nationalId" TEXT,
+    "nationalId" TEXT NOT NULL,
     "farmSize" DOUBLE PRECISION,
     "coordinates" TEXT,
     "landOwnership" "OwnerShip",
@@ -71,11 +71,12 @@ CREATE TABLE "inputs" (
     "createdAt" TIMESTAMPTZ(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMPTZ(3) NOT NULL,
     "name" TEXT NOT NULL,
+    "originalQuantity" DOUBLE PRECISION NOT NULL,
     "quantity" DOUBLE PRECISION NOT NULL,
     "unit" TEXT,
     "type" "InputType" NOT NULL,
     "scheme" "InputScheme" NOT NULL,
-    "barcode" TEXT NOT NULL,
+    "barcode" TEXT,
     "chassisNumber" TEXT,
     "engineType" TEXT,
     "numberPlate" TEXT,
@@ -128,6 +129,9 @@ CREATE TABLE "feedbackMessages" (
 
 -- CreateIndex
 CREATE UNIQUE INDEX "locations_name_key" ON "locations"("name");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "users_nationalId_key" ON "users"("nationalId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "users_email_key" ON "users"("email");

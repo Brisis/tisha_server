@@ -34,7 +34,7 @@ model User {
   gender     Gender?
   phone      String?
   address    String?
-  nationalId String?
+  nationalId String  @unique
 
   farmSize        Float?
   coordinates     String?
@@ -90,16 +90,17 @@ model Input {
   createdAt DateTime @default(now()) @db.Timestamptz(3)
   updatedAt DateTime @updatedAt @db.Timestamptz(3)
 
-  name          String
-  quantity      Float
-  unit          String?
-  type          InputType
-  scheme        InputScheme
-  barcode       String
-  chassisNumber String?
-  engineType    String?
-  numberPlate   String?
-  color         String?
+  name             String
+  originalQuantity Float
+  quantity         Float
+  unit             String?
+  type             InputType
+  scheme           InputScheme
+  barcode          String?
+  chassisNumber    String?
+  engineType       String?
+  numberPlate      String?
+  color            String?
 
   notified Boolean @default(false)
 

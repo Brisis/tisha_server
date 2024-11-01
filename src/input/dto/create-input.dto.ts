@@ -9,6 +9,10 @@ export class CreateInputDto {
   @IsNotEmpty()
   quantity: number;
 
+  @IsNumber()
+  @IsOptional()
+  originalQuantity: number;
+
   @IsString()
   @IsOptional()
   unit: string;
@@ -26,7 +30,7 @@ export class CreateInputDto {
   scheme: "Pfumvudza" | "Command" | "Donors" | "NGO" | "WHO";
 
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   barcode: string;
 
   @IsString()

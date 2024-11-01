@@ -27,6 +27,7 @@ export class AuthService {
                     farmSize: dto.farmSize,
                     email: dto.email,
                     coordinates: dto.coordinates,
+                    nationalId: dto.nationalId,
                     password: hashedPassword
                 },
                 select: {

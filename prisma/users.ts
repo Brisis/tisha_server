@@ -6,7 +6,8 @@ const users = [
         email: "tisha@gmail.com",
         role: Role.SUPERUSER,
         gender: Gender.FEMALE,
-        password: "password"
+        password: "password",
+        nationalId: "00-000000-X-00"
     }
 ]
 

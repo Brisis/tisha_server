@@ -24,7 +24,8 @@ const create = async () => {
                 email: user["email"],
                 password: hashedPassword,
                 role: user["role"],
-                gender: user["gender"]
+                gender: user["gender"],
+                nationalId: user["nationalId"]
             })) || [] ,
             skipDuplicates: true
         })
