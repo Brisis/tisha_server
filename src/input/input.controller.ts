@@ -35,8 +35,8 @@ export class InputController {
 
     @UseGuards(JwtGuard)
     @Patch(":id/notify")
-    notify(@Param("id") id: string) {
-        return this.inputService.notify(id)
+    notify(@Param("id") id: string, @Body() updateInputDto: UpdateInputDto) {
+        return this.inputService.notify(id, updateInputDto)
     }
 
     @Get("/user/:userId")

@@ -5,10 +5,6 @@ export class CreateApplicationDto {
   @IsNotEmpty()
   message: string;
 
-  @IsNumber()
-  @IsNotEmpty()
-  quantity: number;
-
   @IsString()
   @IsNotEmpty()
   inputId: string;

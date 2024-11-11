@@ -57,7 +57,6 @@ export class ApplicationService {
                 data: {
                     inputId: createApplicationDto.inputId,
                     message: createApplicationDto.message,
-                    quantity: createApplicationDto.quantity,
                     userId: createApplicationDto.userId,
                     status: "INPROGRESS"
                 }
@@ -106,7 +105,7 @@ export class ApplicationService {
                 id: inputApplication.inputId
             },
             data: {
-                quantity: input.quantity - createFarmerApplicationDto.quantity
+                given: true
             }
         })
 
@@ -118,7 +117,7 @@ export class ApplicationService {
                 inputs: {
                     create: {
                         inputId: createFarmerApplicationDto.inputId,
-                        quantity: createFarmerApplicationDto.quantity,
+                        quantity: 1,
                     }
                 }
             }

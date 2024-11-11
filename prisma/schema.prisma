@@ -90,19 +90,22 @@ model Input {
   createdAt DateTime @default(now()) @db.Timestamptz(3)
   updatedAt DateTime @updatedAt @db.Timestamptz(3)
 
-  name             String
-  originalQuantity Float
-  quantity         Float
-  unit             String?
-  type             InputType
-  scheme           InputScheme
-  barcode          String?
-  chassisNumber    String?
-  engineType       String?
-  numberPlate      String?
-  color            String?
+  name          String
+  unit          String?
+  type          InputType
+  scheme        InputScheme
+  barcode       String?
+  chassisNumber String?
+  engineType    String?
+  numberPlate   String?
+  color         String?
 
   notified Boolean @default(false)
+  given    Boolean @default(false)
+
+  collectionLocation String?
+  collectionDate     String?
+  collectionTime     String?
 
   userId String
 
@@ -121,7 +124,6 @@ model AssignedInput {
   updatedAt DateTime @updatedAt @db.Timestamptz(3)
 
   received Boolean @default(false)
-  payback  Float?
   quantity Float
 
   inputId String
@@ -138,9 +140,8 @@ model InputApplication {
   createdAt DateTime @default(now()) @db.Timestamptz(3)
   updatedAt DateTime @updatedAt @db.Timestamptz(3)
 
-  status   ApplicationStatus
-  message  String
-  quantity Float
+  status  ApplicationStatus
+  message String
 
   inputId String
   input   Input  @relation(fields: [inputId], references: [id], onDelete: Cascade)

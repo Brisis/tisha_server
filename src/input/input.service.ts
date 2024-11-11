@@ -64,12 +64,46 @@ export class InputService {
 
     async create(createInputDto: CreateInputDto) {
         try {
+            
+            if (createInputDto.barcode != "") {
+                const dbCheckBarcode = await this.prisma.input.findFirst({
+                    where: {
+                        barcode: createInputDto.barcode
+                    }
+                })
+                
+                if (!dbCheckBarcode) {
+                    await this.prisma.input.create({
+                        data: createInputDto
+                    })
+                } else {
+                    console.log("createInputDto.barcode");
+                    throw new ForbiddenException("Barcode taken")
+                }
+            }
+            else {
+                const dbCheckEngine= await this.prisma.input.findFirst({
+                    where: {
+                        OR: [
+                            {
+                                engineType: createInputDto.engineType
+                            },
+                            {
+                                chassisNumber: createInputDto.chassisNumber
+                            }
+                        ]
+                    }
+                })
 
-            createInputDto.originalQuantity = createInputDto.quantity
-
-            await this.prisma.input.create({
-                data: createInputDto
-            })
+                if (!dbCheckEngine) {
+                    await this.prisma.input.create({
+                        data: createInputDto
+                    })
+                } else {
+                    throw new ForbiddenException("Engine or Chasis Number taken")
+                }
+                
+            }
 
             return await this.findAll()
         } catch (error) {
@@ -140,7 +174,7 @@ export class InputService {
         return updatedInput;
     }
 
-    async notify(id: string) {
+    async notify(id: string, updateInputDto: UpdateInputDto) {
         const input = await this.findOne(id)
 
         if (!input) {
@@ -152,7 +186,10 @@ export class InputService {
                 id
             },
             data: {
-                notified: true
+                notified: true,
+                collectionLocation: updateInputDto.collectionLocation,
+                collectionDate: updateInputDto.collectionDate,
+                collectionTime:  updateInputDto.collectionTime,
             }
         })
 
@@ -177,7 +214,6 @@ export class InputService {
                 id: id
             },
             data: {
-                payback: updateFarmerInputDto.payback,
                 received: updateFarmerInputDto.received
             }
         })

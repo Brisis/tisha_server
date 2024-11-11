@@ -1,17 +1,9 @@
-import { IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
+import { IsDateString, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
 
 export class CreateInputDto {
   @IsString()
   @IsNotEmpty()
   name: string;
-
-  @IsNumber()
-  @IsNotEmpty()
-  quantity: number;
-
-  @IsNumber()
-  @IsOptional()
-  originalQuantity: number;
 
   @IsString()
   @IsOptional()
@@ -56,4 +48,16 @@ export class CreateInputDto {
   @IsString()
   @IsNotEmpty()
   locationId: string;
+
+  @IsString()
+  @IsOptional()
+  collectionLocation: string;
+
+  @IsDateString()
+  @IsOptional()
+  collectionDate: string;
+
+   @IsString()
+  @IsOptional() 
+  collectionTime: string;
 }
